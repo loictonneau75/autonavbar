@@ -9,9 +9,11 @@ export function createNavbar(siteInfo, logoUrl, categories) {
     const brand = createBrand(siteInfo, logoUrl);
     const toggleButton = createToggleButton();
     const navbarContent = createNavbarContent(categories);
+    const rightAlignedLinks = createRightAlignedLinks(); // Crée les boutons
     navbar.appendChild(brand);
     navbar.appendChild(toggleButton);
     navbar.appendChild(navbarContent);
+    navbarContent.appendChild(rightAlignedLinks); // Ajoute les boutons dans le menu collapsible
     document.body.prepend(navbar);
 }
 
@@ -21,7 +23,7 @@ export function createNavbar(siteInfo, logoUrl, categories) {
  */
 function createNavbarContainer() {
     const navbar = document.createElement("nav");
-    navbar.className = "navbar navbar-expand-lg navbar-light bg-light";
+    navbar.className = "navbar sticky-top navbar-expand-lg navbar-light bg-transparent";
     return navbar;
 }
 
@@ -168,3 +170,37 @@ function createDropdownMenu(name, subcategories) {
     });
     return dropdownMenu;
 }
+
+/**
+ * Crée un conteneur pour les liens à droite de la navbar (inscription et connexion).
+ * @returns {HTMLElement} Élément <div> contenant les boutons.
+ */
+function createRightAlignedLinks() {
+    const rightContainer = document.createElement("div");
+    rightContainer.className = "d-flex flex-column flex-lg-row mt-3 mt-lg-0"; // Aligne verticalement sur petits écrans
+
+    const registerLink = document.createElement("a");
+    registerLink.className = "btn btn-outline-primary me-lg-2 mb-2 mb-lg-0"; // Espace ajusté pour petits écrans
+    registerLink.href = "#register";
+    registerLink.textContent = "S'enregistrer";
+
+    const loginLink = document.createElement("a");
+    loginLink.className = "btn btn-primary"; // Style Bootstrap pour bouton
+    loginLink.href = "#login";
+    loginLink.textContent = "Se connecter";
+
+    rightContainer.appendChild(registerLink);
+    rightContainer.appendChild(loginLink);
+    return rightContainer;
+}
+
+window.addEventListener("scroll", function () {
+    const navbar = document.querySelector(".navbar");
+    if (window.scrollY > 100) {
+      navbar.classList.add("bg-light", "navbar-shrink");
+      navbar.classList.remove("bg-transparent");
+    } else {
+      navbar.classList.add("bg-transparent");
+      navbar.classList.remove("bg-light", "navbar-shrink");
+    }
+  });
